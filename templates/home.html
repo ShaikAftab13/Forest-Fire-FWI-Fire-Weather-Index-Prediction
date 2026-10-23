@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Fire Prediction</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">Forest Fire Prediction</a>
+            <span class="header-subtitle">Machine Learning Project</span>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="intro">
+            <p class="breadcrumb">HOME / PREDICTION</p>
+            <h1>Fire Weather Index Prediction</h1>
+            <p class="description">
+                Enter the environmental observations below to estimate
+                the Fire Weather Index (FWI) using the trained regression model.
+            </p>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <h2>Environmental Parameters</h2>
+                <p>Enter the values corresponding to your dataset.</p>
+            </div>
+
+            <form action="{{ url_for('predict_datapoint') }}"
+                method="POST">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="Temperature">Temperature (°C)</label>
+                        <input type="number" step="any" id="Temperature"
+                            name="Temperature" placeholder="e.g. 29"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="RH">Relative Humidity (%)</label>
+                        <input type="number" step="any" id="RH"
+                            name="RH" placeholder="e.g. 57"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Ws">Wind Speed (km/h)</label>
+                        <input type="number" step="any" id="Ws"
+                            name="Ws" placeholder="e.g. 18"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Rain">Rainfall (mm)</label>
+                        <input type="number" step="any" id="Rain"
+                            name="Rain" placeholder="e.g. 0.0"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="FFMC">Fine Fuel Moisture Code (FFMC)</label>
+                        <input type="number" step="any" id="FFMC"
+                            name="FFMC" placeholder="Enter FFMC"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="DMC">Duff Moisture Code (DMC)</label>
+                        <input type="number" step="any" id="DMC"
+                            name="DMC" placeholder="Enter DMC"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ISI">Initial Spread Index (ISI)</label>
+                        <input type="number" step="any" id="ISI"
+                            name="ISI" placeholder="Enter ISI"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Classes">Fire Class</label>
+                        <select id="Classes" name="Classes" required>
+                            <option value="" disabled selected>
+                                Select fire class
+                            </option>
+                            <option value="0">Not Fire (0)</option>
+                            <option value="1">Fire (1)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Region">Region</label>
+                        <select id="Region" name="Region" required>
+                            <option value="" disabled selected>
+                                Select region
+                            </option>
+                            <option value="0">Bejaia (0)</option>
+                            <option value="1">Sidi-Bel Abbes (1)</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit">Predict FWI</button>
+                    <span>All fields are required.</span>
+                </div>
+
+            </form>
+        </section>
+
+        {% if results is defined and results is not none %}
+        <section class="result-panel" aria-live="polite">
+            <div>
+                <p class="result-label">PREDICTION RESULT</p>
+                <h2>Estimated Fire Weather Index</h2>
+            </div>
+            <p class="result-value">{{ results | round(2) }}</p>
+        </section>
+        {% endif %}
+
+        <footer class="footer">
+            <p>Algerian Forest Fires Dataset</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
